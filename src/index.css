@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #C98A42;
+  --color-secondary: #C96B7B;
+  --color-ivory: #F3F1E8;
+  --color-rose: #C96B7B;
+  --color-gold: #C98A42;
+  --color-amber: #D48C5A;
+  --color-text-h: #2D2924;
+  --color-brand-gold: #C98A42;
+  --color-brand-rose: #C96B7B;
+  --color-brand-ivory: #F3F1E8;
+  --color-chocolate: #2A1810;
+  
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  --brand-gold: #C98A42;
+  --brand-rose: #C96B7B;
+  --brand-ivory: #F3F1E8;
+  --brand-gradient: linear-gradient(135deg, #C98A42 0%, #D48C5A 45%, #C96B7B 100%);
+  
+  --text: #4A453E;
+  --text-h: #2D2924;
+  --bg: #F3F1E8;
+  --border: rgba(201, 138, 66, 0.2);
+  
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+  color: var(--text);
+  background-color: var(--bg);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* We want to keep it light and elegant as per brand identity, but can add subtle dark mode support if needed */
+    /* For now, let's stick to the brand ivory theme primarily */
+  }
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--brand-ivory);
+}
+
+.brand-gradient-text {
+  background: var(--brand-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-gradient-bg {
+  background: var(--brand-gradient);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-premium {
+  @apply px-8 py-3 rounded-full font-medium transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  background: var(--brand-gradient);
+  color: white;
+}
+
+.btn-outline {
+  @apply px-8 py-3 rounded-full font-medium transition-all duration-300 border border-primary text-primary hover:bg-primary/5;
+}
+
+.btn-nav-outline {
+  @apply px-8 py-3 rounded-full font-medium transition-all duration-300 border border-white/40 text-white hover:bg-white hover:text-chocolate hover:border-white shadow-sm hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--brand-ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-gold);
+  border-radius: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  height: 2px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: rgba(201, 138, 66, 0.1);
+  border-radius: 10px;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--brand-gold);
+  border-radius: 10px;
+}
