@@ -41,7 +41,7 @@ export default function SplitHome() {
         >
           <motion.div 
             animate={{ 
-              padding: hovered ? '0.5rem' : '1rem',
+              padding: hovered ? '2rem' : '2.5rem',
               backgroundColor: hovered ? '#F3F1E8' : 'rgba(42, 24, 16, 0.3)',
               borderColor: hovered ? 'rgba(42, 24, 16, 0.2)' : 'rgba(42, 24, 16, 0.5)'
             }}
