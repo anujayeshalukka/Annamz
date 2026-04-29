@@ -54,10 +54,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  width: 100%;
   overflow-x: hidden;
   background-color: var(--brand-ivory);
+  -webkit-text-size-adjust: 100%;
 }
 
 .brand-gradient-text {

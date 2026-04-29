@@ -144,12 +144,12 @@ export default function BakeryLanding() {
   return (
     <div className="bg-ivory min-h-screen">
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 bg-chocolate/60 backdrop-blur-md ${scrolled ? 'py-1 shadow-xl' : 'py-2 md:py-3'} text-ivory`}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 bg-chocolate/60 backdrop-blur-md ${scrolled ? 'py-1 shadow-xl' : 'py-2 md:py-4'} text-ivory`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <img 
             src={logo} 
             alt="Annamz" 
-            className={`${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-24'} ${scrolled ? 'brightness-0 invert' : ''} transition-all duration-500 object-contain`} 
+            className={`${scrolled ? 'h-10 md:h-16' : 'h-14 md:h-24'} ${scrolled ? 'brightness-0 invert' : ''} transition-all duration-500 object-contain`} 
           />
           
           <div className="hidden md:flex space-x-10 text-xs tracking-[0.3em] font-bold uppercase">
@@ -233,7 +233,7 @@ export default function BakeryLanding() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-6xl md:text-8xl font-serif mb-6"
+            className="text-5xl md:text-8xl font-serif mb-6"
           >
             Annamz Bakery
           </motion.h1>
@@ -241,7 +241,7 @@ export default function BakeryLanding() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl font-light italic mb-10 max-w-2xl mx-auto"
+            className="text-lg md:text-2xl font-light italic mb-10 max-w-2xl mx-auto"
           >
             Handcrafted with love, baked to perfection. Discover the art of premium pâtisserie.
           </motion.p>

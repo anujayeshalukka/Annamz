@@ -48,7 +48,7 @@ export default function SplitHome() {
             }}
             className="rounded-full aspect-square border-[0.5px] backdrop-blur-md flex items-center justify-center transition-all duration-700 overflow-hidden"
           >
-            <img src={logo} alt="Annamz Logo" className="w-32 md:w-48 object-contain drop-shadow-2xl" />
+            <img src={logo} alt="Annamz Logo" className="w-24 md:w-48 object-contain drop-shadow-2xl" />
           </motion.div>
         </motion.div>
       </div>
@@ -82,7 +82,7 @@ export default function SplitHome() {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h2 className="text-4xl md:text-6xl font-serif mb-4 tracking-wider">Annamz Clothing</h2>
+            <h2 className="text-3xl md:text-6xl font-serif mb-4 tracking-wider">Annamz Clothing</h2>
             <p className="text-lg md:text-xl font-light mb-8 italic opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               Luxury Boutique Fashion & Editorial Style
             </p>
@@ -122,7 +122,7 @@ export default function SplitHome() {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h2 className="text-4xl md:text-6xl font-serif mb-4 tracking-wider">Annamz Bakery</h2>
+            <h2 className="text-3xl md:text-6xl font-serif mb-4 tracking-wider">Annamz Bakery</h2>
             <p className="text-lg md:text-xl font-light mb-8 italic opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               Artisan Premium Bakery & Sweet Delights
             </p>
