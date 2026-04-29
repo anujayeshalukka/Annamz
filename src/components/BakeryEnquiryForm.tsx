@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronRight, ChevronLeft, Upload, Check, ShoppingCart, MessageCircle, Phone } from 'lucide-react'
-import { CONTACT_INFO, getWhatsAppLink } from '../config/contact'
+import { getWhatsAppLink } from '../config/contact'
 import { supabase } from '../lib/supabase'
 
 interface Selection {

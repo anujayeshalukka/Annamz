@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Trash2, Edit2, Save, X, Image as ImageIcon, LayoutGrid, List, Upload } from 'lucide-react'
+import { Plus, Trash2, Edit2, Save, X, LayoutGrid, List, Upload } from 'lucide-react'
 import { motion } from 'framer-motion'
 import logo from '../assets/images/logo.png'
 import AdminLogin from './AdminLogin'
@@ -22,7 +22,6 @@ const CATEGORIES = ['Sarees', 'Gowns', 'Bridal', 'Casual', 'Accessories'];
 export default function AdminPanel() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isAdding, setIsAdding] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem('admin_auth') === 'true';
   });
@@ -44,7 +43,6 @@ export default function AdminPanel() {
 
   const fetchProducts = async () => {
     try {
-      setIsLoading(true);
       const { data, error } = await supabase
         .from('products')
         .select('*')
@@ -55,7 +53,6 @@ export default function AdminPanel() {
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
-      setIsLoading(false);
     }
   };
 
@@ -66,7 +63,6 @@ export default function AdminPanel() {
     }
     
     try {
-      setIsLoading(true);
       
       // 1. Upload image if it's a data URL (newly uploaded)
       let finalImageUrl = newProduct.image || '';
@@ -110,7 +106,6 @@ export default function AdminPanel() {
       console.error('Error adding product:', error);
       alert('Error adding product: ' + error.message);
     } finally {
-      setIsLoading(false);
     }
   };
 

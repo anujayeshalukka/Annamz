@@ -1,7 +1,7 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, ShoppingBag, Menu, X, Camera, Phone } from 'lucide-react'
-import { useState, useEffect, useMemo } from 'react'
+import { ShoppingBag, Menu, X, Camera, Phone } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import { CONTACT_INFO, getWhatsAppLink } from '../config/contact'
 import type { Product } from './AdminPanel'
 import { supabase } from '../lib/supabase'
@@ -199,7 +199,6 @@ export default function ClothingApp() {
   }, [])
 
   const [products, setProducts] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     fetchProducts()
@@ -207,7 +206,6 @@ export default function ClothingApp() {
 
   const fetchProducts = async () => {
     try {
-      setIsLoading(true)
       const { data, error } = await supabase
         .from('products')
         .select('*')
@@ -219,7 +217,6 @@ export default function ClothingApp() {
       console.error('Error fetching products:', error)
       setProducts(DEFAULT_PRODUCTS)
     } finally {
-      setIsLoading(false)
     }
   }
 
