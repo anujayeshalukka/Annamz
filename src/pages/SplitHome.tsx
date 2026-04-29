@@ -41,13 +41,13 @@ export default function SplitHome() {
         >
           <motion.div 
             animate={{ 
-              padding: hovered ? '1.5rem' : '3rem',
+              padding: hovered ? '0.5rem' : '1rem',
               backgroundColor: hovered ? '#F3F1E8' : 'rgba(42, 24, 16, 0.3)',
               borderColor: hovered ? 'rgba(42, 24, 16, 0.2)' : 'rgba(42, 24, 16, 0.5)'
             }}
-            className="rounded-full border-[0.5px] backdrop-blur-md flex items-center justify-center transition-all duration-700"
+            className="rounded-full aspect-square border-[0.5px] backdrop-blur-md flex items-center justify-center transition-all duration-700 overflow-hidden"
           >
-            <img src={logo} alt="Annamz Logo" className="w-48 md:w-64 drop-shadow-2xl" />
+            <img src={logo} alt="Annamz Logo" className="w-32 md:w-48 object-contain drop-shadow-2xl" />
           </motion.div>
         </motion.div>
       </div>
