@@ -6,7 +6,7 @@ import { CONTACT_INFO, getWhatsAppLink } from '../config/contact'
 import type { Product } from './AdminPanel'
 import { supabase } from '../lib/supabase'
 import logo from '../assets/images/logo.png'
-import clothingVideo from '../assets/images/annamzclothings1.mp4'
+const clothingVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/annamzclothings1.mp4'
 
 // Default fallback data
 const DEFAULT_PRODUCTS: Product[] = [
@@ -26,6 +26,7 @@ function ClothingHome({ products }: { products: Product[] }) {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={clothingVideo} type="video/mp4" />

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/images/logo.png'
-import bakeryVideo from '../assets/images/annamzbakery.mp4'
-import clothingVideo from '../assets/images/annamzclothings1.mp4'
+const bakeryVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/bakery.mp4'
+const clothingVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/annamzclothings1.mp4'
 
 export default function SplitHome() {
   const [hovered, setHovered] = useState<'clothing' | 'bakery' | null>(null)
@@ -68,6 +68,7 @@ export default function SplitHome() {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
         >
           <source src={clothingVideo} type="video/mp4" />
@@ -107,6 +108,7 @@ export default function SplitHome() {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
         >
           <source src={bakeryVideo} type="video/mp4" />

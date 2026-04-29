@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Phone, MessageCircle, ChevronRight, Star, ShoppingBag, Globe, Share2, Mail, Clock, Menu, X } from 'lucide-react'
 import logo from '../assets/images/logo.png'
-import bakeryVideo from '../assets/images/annamzbakery.mp4'
+const bakeryVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/bakery.mp4'
 import aboutImg from '../assets/images/about.jpg'
 import weddingImg from '../assets/images/wedding.jpg'
 import birthdayImg from '../assets/images/birthday.jpg'
@@ -221,6 +221,7 @@ export default function BakeryLanding() {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={bakeryVideo} type="video/mp4" />
