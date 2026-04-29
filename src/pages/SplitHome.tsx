@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import logo from '../assets/images/logo.png'
+const IMAGE_BASE_URL = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/images/'
+const logo = IMAGE_BASE_URL + 'logo.png'
 const bakeryVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/bakery.mp4'
 const clothingVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/annamzclothings1.mp4'
 

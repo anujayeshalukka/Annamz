@@ -5,7 +5,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { CONTACT_INFO, getWhatsAppLink } from '../config/contact'
 import type { Product } from './AdminPanel'
 import { supabase } from '../lib/supabase'
-import logo from '../assets/images/logo.png'
+const IMAGE_BASE_URL = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/images/'
+const logo = IMAGE_BASE_URL + 'logo.png'
 const clothingVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/annamzclothings1.mp4'
 
 // Default fallback data
