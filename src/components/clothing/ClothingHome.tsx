@@ -6,7 +6,7 @@ import type { Product } from '../../types/clothing'
 import { CATEGORY_IMAGE_URL, clothingVideo } from '../../constants/clothing'
 
 export function ClothingHome({ products, addToEnquiry }: { products: Product[], addToEnquiry: (p: Product) => void }) {
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(12);
 
   // Create a mixed list of latest items from all 4 categories
   const getMixedProducts = () => {
@@ -162,7 +162,7 @@ export function ClothingHome({ products, addToEnquiry }: { products: Product[], 
         {visibleCount < displayProducts.length && (
           <div className="flex justify-center mt-16">
             <button 
-              onClick={() => setVisibleCount(prev => prev + 8)}
+              onClick={() => setVisibleCount(prev => prev + 12)}
               className="px-12 py-4 border border-chocolate text-chocolate rounded-full text-xs tracking-[0.2em] font-bold uppercase hover:bg-chocolate hover:text-white transition-all duration-500"
             >
               Load More Pieces
