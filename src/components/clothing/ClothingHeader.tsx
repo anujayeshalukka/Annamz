@@ -84,6 +84,43 @@ export function ClothingHeader({
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay (Bakery Style) */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-chocolate border-t border-white/10 overflow-hidden"
+          >
+            <div className="flex flex-col p-8 space-y-6 text-sm tracking-[0.2em] font-bold uppercase">
+              {[
+                { name: 'Home', path: '/clothing' },
+                { name: 'Collections', path: '/clothing/collections' },
+                { name: 'About', path: '/clothing#about' },
+                { name: 'Contact', path: '/clothing#contact' }
+              ].map(item => (
+                <Link 
+                  key={item.name}
+                  to={item.path} 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="hover:text-gold transition-colors"
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Link 
+                to="/bakery" 
+                onClick={() => setIsMenuOpen(false)}
+                className="btn-nav-outline w-full text-center text-[10px] tracking-widest uppercase font-bold py-3 mt-4"
+              >
+                Annamz Bakery
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
