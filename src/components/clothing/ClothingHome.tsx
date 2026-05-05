@@ -70,7 +70,7 @@ export function ClothingHome({ products, addToEnquiry }: { products: Product[], 
 
       {/* Categories Grid */}
       <section id="categories" className="container mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {[
             { label: 'Sarees', match: 'Sarees' },
             { label: 'Salwars', match: 'Salwar Suits' },
@@ -100,7 +100,7 @@ export function ClothingHome({ products, addToEnquiry }: { products: Product[], 
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-white text-3xl font-serif tracking-widest uppercase">{cat.label}</h3>
+                  <h3 className="text-white text-xl md:text-3xl font-serif tracking-widest uppercase text-center px-2">{cat.label}</h3>
                 </div>
               </motion.div>
             </Link>
