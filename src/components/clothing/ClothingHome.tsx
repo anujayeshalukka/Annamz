@@ -7,6 +7,30 @@ import { CATEGORY_IMAGE_URL, clothingVideo } from '../../constants/clothing'
 
 export function ClothingHome({ products, addToEnquiry }: { products: Product[], addToEnquiry: (p: Product) => void }) {
   const [visibleCount, setVisibleCount] = useState(8);
+
+  // Create a mixed list of latest items from all 4 categories
+  const getMixedProducts = () => {
+    const categories = ['Sarees', 'Salwar Suits', 'Kurta & Frock Collection', 'Footwear'];
+    const grouped: Product[][] = categories.map(cat => 
+      products.filter(p => p.main_category === cat)
+    );
+
+    const mixed: Product[] = [];
+    const maxLen = Math.max(...grouped.map(g => g.length));
+
+    for (let i = 0; i < maxLen; i++) {
+      grouped.forEach(group => {
+        if (group[i]) mixed.push(group[i]);
+      });
+    }
+
+    // Add any remaining products that don't match these categories (if any)
+    const remaining = products.filter(p => !categories.includes(p.main_category || ''));
+    return [...mixed, ...remaining];
+  };
+
+  const displayProducts = getMixedProducts();
+
   return (
     <div className="space-y-24 pb-24">
       {/* Editorial Hero */}
@@ -93,7 +117,7 @@ export function ClothingHome({ products, addToEnquiry }: { products: Product[], 
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-          {products.slice(0, visibleCount).map((product: Product) => (
+          {displayProducts.slice(0, visibleCount).map((product: Product) => (
             <div key={product.id} className="group">
               <div className="bg-white rounded-[1.2rem] md:rounded-[1.8rem] p-1.5 md:p-2.5 shadow-sm hover:shadow-xl transition-all duration-500 border border-gold/5 flex flex-col h-full relative overflow-hidden">
                 <Link to={`/clothing/product/${product.id}`} className="block">
@@ -135,7 +159,7 @@ export function ClothingHome({ products, addToEnquiry }: { products: Product[], 
           ))}
         </div>
 
-        {visibleCount < products.length && (
+        {visibleCount < displayProducts.length && (
           <div className="flex justify-center mt-16">
             <button 
               onClick={() => setVisibleCount(prev => prev + 8)}
