@@ -100,36 +100,47 @@ export default function ClothingApp() {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-text-h/95 flex flex-col items-center justify-center"
-          >
-            <button 
-              onClick={() => setIsMenuOpen(false)}
-              className="absolute top-6 right-6 p-4 text-ivory"
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[60] bg-chocolate/98 backdrop-blur-xl flex flex-col items-center justify-center"
             >
-              <X size={32} />
-            </button>
-            <nav className="text-center space-y-8">
-              {['Home', 'Bakery', 'Collections', 'New Arrivals', 'About', 'Contact'].map((item, idx) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <Link 
-                    to={item === 'Home' ? '/clothing' : item === 'Bakery' ? '/bakery' : item === 'Collections' ? '/clothing/collections' : '#'}
-                    className={`text-4xl font-serif text-ivory hover:text-gold transition-colors ${item === 'Bakery' ? 'px-8 py-2 border border-white/20 rounded-full' : ''}`}
+              <button 
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-8 right-8 p-4 text-ivory hover:text-gold transition-colors"
+              >
+                <X size={32} />
+              </button>
+              <nav className="text-center space-y-8 flex flex-col items-center">
+                {[
+                  { name: 'Home', path: '/clothing' },
+                  { name: 'Bakery', path: '/bakery' },
+                  { name: 'Collections', path: '/clothing/collections' },
+                  { name: 'About', path: '/clothing#about' },
+                  { name: 'Contact', path: '/clothing#contact' }
+                ].map((item, idx) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
                   >
-                    {item}
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
-          </motion.div>
+                    <Link 
+                      to={item.path}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`text-4xl font-serif text-ivory hover:text-gold transition-colors ${item.name === 'Bakery' ? 'px-8 py-2 border border-white/20 rounded-full' : ''}`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+            </motion.div>
+            {/* Lock scroll when menu is open */}
+            <style dangerouslySetInnerHTML={{ __html: 'body { overflow: hidden; }' }} />
+          </>
         )}
       </AnimatePresence>
 
