@@ -22,9 +22,7 @@ export default function AdminPanel() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | number | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('admin_auth') === 'true';
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
@@ -47,6 +45,20 @@ export default function AdminPanel() {
   const [newProduct, setNewProduct] = useState<Partial<Product>>(emptyProduct);
   const [rawSizes, setRawSizes] = useState('');
   const [rawColors, setRawColors] = useState('');
+
+  useEffect(() => {
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -183,13 +195,20 @@ export default function AdminPanel() {
 
   const handleLogin = () => {
     setIsAuthenticated(true);
-    localStorage.setItem('admin_auth', 'true');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
-    localStorage.removeItem('admin_auth');
   };
+
+  if (isAuthenticated === null) {
+    return (
+      <div className="min-h-screen bg-ivory flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <AdminLogin onLogin={handleLogin} />;

@@ -62,7 +62,7 @@ export function EnquiryDrawer({
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-1">
-                        <h4 className="font-serif text-lg leading-tight">{item.name}</h4>
+                        <h4 className="font-serif text-base leading-tight">{item.name}</h4>
                         <button onClick={() => onRemove(item.id)} className="text-gray-300 hover:text-red-500 transition-colors">
                           <Trash2 size={16} />
                         </button>
@@ -98,13 +98,21 @@ export function EnquiryDrawer({
 
             {items.length > 0 && (
               <div className="p-8 border-t border-gray-100 bg-gray-50/50">
-                <button 
-                  onClick={onProceed}
-                  className="w-full bg-chocolate text-white py-4 rounded-2xl font-medium flex items-center justify-center gap-3 shadow-xl hover:bg-gold transition-all"
-                >
-                  Proceed to Enquiry Form
-                  <Send size={18} />
-                </button>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={onClose}
+                    className="flex-1 border border-chocolate text-chocolate py-4 rounded-2xl text-[10px] uppercase tracking-widest font-bold flex items-center justify-center hover:bg-chocolate hover:text-white transition-all"
+                  >
+                    Shop More
+                  </button>
+                  <button 
+                    onClick={onProceed}
+                    className="flex-[1.8] bg-chocolate text-white py-4 rounded-2xl text-[10px] uppercase tracking-widest font-bold flex items-center justify-center gap-3 shadow-xl hover:bg-gold transition-all"
+                  >
+                    Proceed to Enquiry
+                    <Send size={16} />
+                  </button>
+                </div>
               </div>
             )}
           </motion.div>

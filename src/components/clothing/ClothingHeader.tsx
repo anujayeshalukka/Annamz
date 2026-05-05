@@ -19,10 +19,10 @@ export function ClothingHeader({
   const { pathname } = useLocation();
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-500 bg-chocolate/60 backdrop-blur-md ${pathname === '/clothing' && !scrolled ? '' : 'shadow-xl'} text-ivory`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${pathname === '/clothing' && !scrolled ? 'bg-chocolate/60' : 'bg-chocolate'} backdrop-blur-md ${pathname === '/clothing' && !scrolled ? '' : 'shadow-xl'} text-ivory`}>
       <div className="container mx-auto px-6 py-2 flex justify-between items-center">
         <Link to="/clothing" className="flex-shrink-0">
-          <img src={logo} alt="Annamz" className={`${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-24'} ${scrolled || pathname !== '/clothing' ? 'brightness-0 invert' : ''} transition-all duration-300`} />
+          <img src={logo} alt="Annamz" className={`${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-24'} transition-all duration-300`} />
         </Link>
         
         <div className="hidden md:flex space-x-12 text-xs uppercase tracking-[0.3em] font-bold">
@@ -64,8 +64,8 @@ export function ClothingHeader({
             </AnimatePresence>
           </div>
 
-          <a href="#about" className="hover:text-gold transition-colors">About</a>
-          <a href="#contact" className="hover:text-gold transition-colors">Contact</a>
+          <Link to="/clothing/about" className="hover:text-gold transition-colors">About</Link>
+          <Link to="/clothing/contact" className="hover:text-gold transition-colors">Contact</Link>
         </div>
 
         <div className="flex items-center space-x-6">
@@ -98,8 +98,8 @@ export function ClothingHeader({
               {[
                 { name: 'Home', path: '/clothing' },
                 { name: 'Collections', path: '/clothing/collections' },
-                { name: 'About', path: '/clothing#about' },
-                { name: 'Contact', path: '/clothing#contact' }
+                { name: 'About', path: '/clothing/about' },
+                { name: 'Contact', path: '/clothing/contact' }
               ].map(item => (
                 <Link 
                   key={item.name}

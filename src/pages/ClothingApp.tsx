@@ -16,6 +16,9 @@ import { ProductListing } from '../components/clothing/ProductListing'
 import { ProductDetail } from '../components/clothing/ProductDetail'
 import { EnquiryDrawer } from '../components/clothing/EnquiryDrawer'
 import { EnquiryForm } from '../components/clothing/EnquiryForm'
+import { AboutPage } from '../components/clothing/AboutPage'
+import { ContactPage } from '../components/clothing/ContactPage'
+import { MobileBottomNav } from '../components/clothing/MobileBottomNav'
 
 export default function ClothingApp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -103,6 +106,8 @@ export default function ClothingApp() {
         <Route path="collections" element={<ProductListing products={products} addToEnquiry={addToEnquiry} />} />
         <Route path="category/:catName" element={<ProductListing products={products} addToEnquiry={addToEnquiry} />} />
         <Route path="product/:id" element={<ProductDetail products={products} addToEnquiry={addToEnquiry} />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="contact" element={<ContactPage />} />
       </Routes>
 
       <EnquiryDrawer 
@@ -133,7 +138,7 @@ export default function ClothingApp() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           onClick={() => setIsEnquiryDrawerOpen(true)}
-          className="fixed bottom-8 right-8 bg-gold text-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-4 z-40 group hover:scale-110 transition-all border border-white/20 shadow-gold/30"
+          className="fixed bottom-24 md:bottom-8 right-6 md:right-8 bg-gold text-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-4 z-40 group hover:scale-110 transition-all border border-white/20 shadow-gold/30"
         >
           <div className="relative">
             <ShoppingBag size={24} />
@@ -146,6 +151,7 @@ export default function ClothingApp() {
       )}
 
       <ClothingFooter />
+      <MobileBottomNav />
     </div>
   )
 }

@@ -48,8 +48,8 @@ export function ProductListing({ products, addToEnquiry }: { products: Product[]
     : null;
 
   return (
-    <div className="container mx-auto px-6 py-40 min-h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 border-b border-gray-100 pb-12">
+    <div className="container mx-auto px-6 py-24 md:py-40 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6 md:gap-8 border-b border-gray-100 pb-8 md:pb-12">
         <div className="text-left">
           <motion.h1 
             initial={{ opacity: 0, x: -20 }}

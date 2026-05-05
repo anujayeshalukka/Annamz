@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Instagram, Phone, Mail, MessageCircle } from 'lucide-react'
+import { Camera, Phone, Mail, MessageCircle } from 'lucide-react'
 import { logo } from '../../constants/clothing'
 import { CONTACT_INFO, getWhatsAppLink } from '../../config/contact'
 
@@ -17,16 +17,15 @@ export function ClothingFooter() {
           <h4 className="font-serif text-xl mb-6">Explore</h4>
           <ul className="space-y-4 text-gray-500 text-sm">
             <li><Link to="/clothing/collections" className="hover:text-rose transition-colors">Our Collections</Link></li>
-            <li><a href="#" className="hover:text-rose transition-colors">New Arrivals</a></li>
-            <li><a href="#" className="hover:text-rose transition-colors">Bridal Couture</a></li>
-            <li><a href="#" className="hover:text-rose transition-colors">Bespoke Gowns</a></li>
+            <li><Link to="/clothing/about" className="hover:text-rose transition-colors">About Us</Link></li>
+            <li><Link to="/clothing/contact" className="hover:text-rose transition-colors">Contact Us</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-serif text-xl mb-6">Connect</h4>
           <div className="flex space-x-4 mb-6">
             <a href="https://instagram.com/annamz_clothing" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-200 rounded-full hover:bg-gold hover:text-white transition-all">
-              <Instagram size={18} />
+              <Camera size={18} />
             </a>
             <a href={getWhatsAppLink('Hello Annamz Clothing!')} target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-200 rounded-full hover:bg-gold hover:text-white transition-all">
               <MessageCircle size={18} />
@@ -46,11 +45,11 @@ export function ClothingFooter() {
       </div>
       <div className="container mx-auto mt-20 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between text-xs text-gray-400 tracking-widest uppercase">
         <span>© 2026 Annamz Clothing. Boutique of Excellence.</span>
-        <div className="flex flex-wrap gap-x-8 gap-y-2 mt-4 md:mt-0">
+        <div className="flex flex-wrap gap-x-8 gap-y-2 mt-4 md:mt-0 items-center">
           <a href="#" className="hover:text-rose transition-colors">Privacy Policy</a>
           <a href="#" className="hover:text-rose transition-colors">Terms of Service</a>
-          <Link to="/admin" className="hover:text-gold transition-colors border-l border-gray-200 pl-8 hidden md:block">Admin Portal</Link>
-          <Link to="/admin" className="hover:text-gold transition-colors md:hidden">Admin Portal</Link>
+          <div className="h-3 w-px bg-gray-200 hidden md:block"></div>
+          <Link to="/admin" className="hover:text-rose transition-colors">Admin Portal</Link>
         </div>
       </div>
     </footer>

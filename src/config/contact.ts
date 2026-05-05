@@ -1,7 +1,7 @@
 export const CONTACT_INFO = {
   phone: '(+91) 99950 90661',
   whatsapp: '919995090661',
-  email: 'info@annamz.com',
+  email: 'annamz.artistry@gmail.com',
   address: 'Annamz Boutique, Artisan Square, Gourmet District, PIN 682001',
 }
 

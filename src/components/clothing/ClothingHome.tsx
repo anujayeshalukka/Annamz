@@ -6,7 +6,7 @@ import type { Product } from '../../types/clothing'
 import { CATEGORY_IMAGE_URL, clothingVideo } from '../../constants/clothing'
 
 export function ClothingHome({ products, addToEnquiry }: { products: Product[], addToEnquiry: (p: Product) => void }) {
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visibleCount, setVisibleCount] = useState(15);
 
   // Create a mixed list of latest items from all 4 categories
   const getMixedProducts = () => {
@@ -116,7 +116,7 @@ export function ClothingHome({ products, addToEnquiry }: { products: Product[], 
             <p className="text-gray-500 italic">Curated pieces for the season</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
           {displayProducts.slice(0, visibleCount).map((product: Product) => (
             <div key={product.id} className="group">
               <div className="bg-white rounded-[1.2rem] md:rounded-[1.8rem] p-1.5 md:p-2.5 shadow-sm hover:shadow-xl transition-all duration-500 border border-gold/5 flex flex-col h-full relative overflow-hidden">

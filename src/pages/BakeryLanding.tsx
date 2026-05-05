@@ -47,6 +47,7 @@ const id35 = IMAGE_BASE_URL + 'id35.jpg'
 const id36 = IMAGE_BASE_URL + 'id36.webp'
 const id37 = IMAGE_BASE_URL + 'id37.jpg'
 import BakeryEnquiryForm from '../components/BakeryEnquiryForm'
+import { BakeryBottomNav } from '../components/BakeryBottomNav'
 import { CONTACT_INFO, getWhatsAppLink } from '../config/contact'
 
 const CATEGORIES = [
@@ -152,33 +153,35 @@ export default function BakeryLanding() {
             className={`${scrolled ? 'h-10 md:h-16' : 'h-14 md:h-24'} ${scrolled ? 'brightness-0 invert' : ''} transition-all duration-500 object-contain`} 
           />
           
-          <div className="hidden md:flex space-x-10 text-xs tracking-[0.3em] font-bold uppercase">
-            <a href="#about" className="hover:text-gold transition-colors">About</a>
-            <a href="#menu" className="hover:text-gold transition-colors">Menu</a>
-            <a href="#custom" className="hover:text-gold transition-colors">Custom Orders</a>
-            <a href="#contact" className="hover:text-gold transition-colors">Contact</a>
-          </div>
+          <div className="flex items-center gap-8 lg:gap-16">
+            <div className="hidden md:flex space-x-8 lg:space-x-10 text-xs tracking-[0.3em] font-bold uppercase">
+              <a href="#about" className="hover:text-gold transition-colors whitespace-nowrap">About</a>
+              <a href="#menu" className="hover:text-gold transition-colors whitespace-nowrap">Menu</a>
+              <a href="#custom" className="hover:text-gold transition-colors whitespace-nowrap">Custom Orders</a>
+              <a href="#contact" className="hover:text-gold transition-colors whitespace-nowrap">Contact</a>
+            </div>
 
-          <div className="flex items-center space-x-6">
-            <Link 
-              to="/clothing" 
-              className="hidden md:block btn-nav-outline px-6 py-2.5 text-xs tracking-widest uppercase font-bold"
-            >
-              Annamz Clothings
-            </Link>
-            <button 
-              onClick={() => setIsEnquiryOpen(true)}
-              className="hidden md:block btn-premium px-6 py-2.5 text-xs tracking-widest uppercase font-bold"
-            >
-              Order Now
-            </button>
-            
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 -mr-2 hover:bg-white/10 rounded-full transition-colors"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="flex items-center space-x-4 md:space-x-6">
+              <Link 
+                to="/clothing" 
+                className="hidden md:block btn-nav-outline px-6 py-2.5 text-xs tracking-widest uppercase font-bold whitespace-nowrap"
+              >
+                Annamz Clothings
+              </Link>
+              <button 
+                onClick={() => setIsEnquiryOpen(true)}
+                className="hidden md:block btn-premium px-6 py-2.5 text-xs tracking-widest uppercase font-bold whitespace-nowrap"
+              >
+                Order Now
+              </button>
+              
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 -mr-2 hover:bg-white/10 rounded-full transition-colors"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -315,7 +318,7 @@ export default function BakeryLanding() {
             </div> */}
 
             {/* Category Filters */}
-            <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-2 mb-16 overflow-x-auto pb-4 thin-scrollbar px-6 md:px-0">
+            <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-2 mb-6 md:mb-16 overflow-x-auto pb-4 thin-scrollbar px-6 md:px-0">
               {CATEGORIES.map((category) => (
                 <button
                   key={category}
@@ -581,6 +584,7 @@ export default function BakeryLanding() {
       </footer>
 
       <BakeryEnquiryForm isOpen={isEnquiryOpen} onClose={() => setIsEnquiryOpen(false)} />
+      <BakeryBottomNav />
     </div>
   )
 }
