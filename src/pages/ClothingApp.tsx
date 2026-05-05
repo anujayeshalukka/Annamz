@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabase'
 
 // Shared Types & Constants
 import type { Product, EnquiryItem } from '../types/clothing'
-import { DEFAULT_PRODUCTS, logo } from '../constants/clothing'
+import { DEFAULT_PRODUCTS } from '../constants/clothing'
 
 // Modular Components
 import { ClothingHeader } from '../components/clothing/ClothingHeader'

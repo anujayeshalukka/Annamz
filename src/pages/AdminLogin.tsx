@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, User, ChevronRight } from 'lucide-react'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/logo.png'
 import { supabase } from '../lib/supabase'
 
 interface AdminLoginProps {

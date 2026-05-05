@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, Edit2, Save, X, LayoutGrid, List, Upload } from 'lucide-react'
 import { motion } from 'framer-motion'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/logo.png'
 import AdminLogin from './AdminLogin'
 import { supabase } from '../lib/supabase'
 
