@@ -18,11 +18,14 @@ const CATEGORY_BUCKETS: Record<string, string> = {
   'Footwear': 'jutti'
 };
 
+const AUTHORIZED_ADMINS = ['annamz.artistry@gmail.com'];
+
 export default function AdminPanel() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
@@ -49,12 +52,26 @@ export default function AdminPanel() {
   useEffect(() => {
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsAuthenticated(!!session);
+      if (session?.user) {
+        const isAdmin = AUTHORIZED_ADMINS.includes(session.user.email || '');
+        setIsAuthenticated(true);
+        setIsAuthorized(isAdmin);
+      } else {
+        setIsAuthenticated(false);
+        setIsAuthorized(true);
+      }
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
+      if (session?.user) {
+        const isAdmin = AUTHORIZED_ADMINS.includes(session.user.email || '');
+        setIsAuthenticated(true);
+        setIsAuthorized(isAdmin);
+      } else {
+        setIsAuthenticated(false);
+        setIsAuthorized(true);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -212,6 +229,28 @@ export default function AdminPanel() {
 
   if (!isAuthenticated) {
     return <AdminLogin onLogin={handleLogin} />;
+  }
+
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-ivory flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-10 text-center border border-red-100">
+          <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <X className="text-red-500" size={40} />
+          </div>
+          <h1 className="text-2xl font-serif text-chocolate mb-4">Access Denied</h1>
+          <p className="text-gray-500 mb-8">
+            Your account does not have administrator privileges. Please contact the system owner if you believe this is an error.
+          </p>
+          <button 
+            onClick={handleLogout}
+            className="btn-premium w-full py-4"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

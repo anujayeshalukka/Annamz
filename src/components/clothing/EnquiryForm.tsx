@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Send } from 'lucide-react'
 import { getWhatsAppLink } from '../../config/contact'
 import type { EnquiryItem } from '../../types/clothing'
+import { COUNTRY_CODES } from '../../constants/countries'
 
 export function EnquiryForm({
   isOpen,
@@ -15,35 +16,96 @@ export function EnquiryForm({
   items: EnquiryItem[];
   onSubmit: (details: any) => void;
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  const nameRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const whatsappRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLTextAreaElement>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
+    countryCode: '+91',
     whatsapp: '',
+    whatsappCountryCode: '+91',
     email: '',
     deliveryOption: 'Pickup',
     address: '',
     notes: ''
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    let firstErrorField: string | null = null;
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+      if (!firstErrorField) firstErrorField = 'name';
+    }
+    
+    // Allow any 10 digit number
+    const phoneRegex = /^\d{10}$/;
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number is required';
+      if (!firstErrorField) firstErrorField = 'phone';
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = 'Invalid phone number (10 digits)';
+      if (!firstErrorField) firstErrorField = 'phone';
+    }
+
+    if (formData.whatsapp && !phoneRegex.test(formData.whatsapp)) {
+      newErrors.whatsapp = 'Invalid WhatsApp number';
+      if (!firstErrorField) firstErrorField = 'whatsapp';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formData.email && !emailRegex.test(formData.email)) {
+      newErrors.email = 'Invalid email address';
+      if (!firstErrorField) firstErrorField = 'email';
+    }
+
+    if (formData.deliveryOption === 'Home Delivery' && !formData.address.trim()) {
+      newErrors.address = 'Address is required for delivery';
+      if (!firstErrorField) firstErrorField = 'address';
+    }
+
+    setErrors(newErrors);
+
+    // Focus the first error field
+    if (firstErrorField) {
+      if (firstErrorField === 'name') nameRef.current?.focus();
+      else if (firstErrorField === 'phone') phoneRef.current?.focus();
+      else if (firstErrorField === 'whatsapp') whatsappRef.current?.focus();
+      else if (firstErrorField === 'email') emailRef.current?.focus();
+      else if (firstErrorField === 'address') addressRef.current?.focus();
+    }
+
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     setIsSubmitting(true);
     
+    const finalPhone = `${formData.countryCode} ${formData.phone}`;
+    const finalWhatsApp = formData.whatsapp ? `${formData.whatsappCountryCode} ${formData.whatsapp}` : finalPhone;
+
     // Format WhatsApp Message
     const itemsText = items.map((item, idx) => {
-      const shortId = item.id.toString().split('-')[0].toUpperCase();
-      const idText = `ID: #${shortId}\n`;
       const sizeText = item.sizes && item.sizes.length > 0 ? `Size: ${item.sizes[0]}\n` : '';
       const subText = item.subcategory ? `Type/Style: ${item.subcategory}\n` : '';
       const fabricText = item.fabric ? `Fabric: ${item.fabric}\n` : '';
       const ageText = item.age_group ? `Age Group: ${item.age_group}\n` : '';
 
-      return `${idx + 1}. ${item.name}
+      return `${idx + 1}. *${item.name}*
+${item.image}
 Category: ${item.main_category}
-${idText}${sizeText}${subText}${fabricText}${ageText}Quantity: ${item.quantity}`;
+${sizeText}${subText}${fabricText}${ageText}Quantity: ${item.quantity}`;
     }).join('\n\n');
 
     const message = `Hello Annamz Clothing,
@@ -52,26 +114,29 @@ I would like to enquire about the following products:
 
 ${itemsText}
 
-Customer Name: ${formData.name}
-Phone: ${formData.phone}
-WhatsApp: ${formData.whatsapp}
-Delivery Option: ${formData.deliveryOption}
+*Customer Details:*
+Name: ${formData.name}
+Phone: ${finalPhone}
+WhatsApp: ${finalWhatsApp}
+Email: ${formData.email || 'N/A'}
+Delivery: ${formData.deliveryOption}
 ${formData.deliveryOption === 'Home Delivery' ? `Address: ${formData.address}` : ''}
-${formData.notes ? `Additional Notes: ${formData.notes}` : ''}
+${formData.notes ? `Notes: ${formData.notes}` : ''}
 
 Please share the details. Thank you.`;
 
-    // Simulate database save or just redirect to WhatsApp
+    // Open WhatsApp immediately
+    window.open(getWhatsAppLink(message), '_blank');
+    
+    setIsSubmitting(false);
+    setIsSuccess(true);
+    onSubmit(formData);
+    
+    // Auto close after success message
     setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      setTimeout(() => {
-        window.open(getWhatsAppLink(message), '_blank');
-        onSubmit(formData);
-        onClose();
-        setIsSuccess(false);
-      }, 1500);
-    }, 1000);
+      onClose();
+      setIsSuccess(false);
+    }, 2000);
   };
 
   return (
@@ -114,47 +179,90 @@ Please share the details. Thank you.`;
                 <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 md:p-12 thin-scrollbar space-y-8">
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gray-400 ml-1">Full Name</label>
+                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Full Name</label>
                       <input 
+                        ref={nameRef}
                         required
                         type="text" 
                         value={formData.name}
-                        onChange={e => setFormData({...formData, name: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium"
+                        onChange={e => {
+                          setFormData({...formData, name: e.target.value});
+                          if (errors.name) setErrors({...errors, name: ''});
+                        }}
+                        className={`w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 outline-none transition-all font-medium ${errors.name ? 'ring-red-400' : 'ring-gold/20'}`}
                         placeholder="Your name"
                       />
+                      {errors.name && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.name}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gray-400 ml-1">Phone Number</label>
-                      <input 
-                        required
-                        type="tel" 
-                        value={formData.phone}
-                        onChange={e => setFormData({...formData, phone: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium"
-                        placeholder="+91"
-                      />
+                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Phone Number</label>
+                      <div className="flex gap-2">
+                        <select 
+                          value={formData.countryCode}
+                          onChange={e => setFormData({...formData, countryCode: e.target.value})}
+                          className="px-3 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium text-sm text-gray-500"
+                        >
+                          {COUNTRY_CODES.map(c => (
+                            <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                          ))}
+                        </select>
+                        <input 
+                          ref={phoneRef}
+                          required
+                          type="tel" 
+                          value={formData.phone}
+                          onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({...formData, phone: val});
+                            if (errors.phone) setErrors({...errors, phone: ''});
+                          }}
+                          className={`w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 outline-none transition-all font-medium ${errors.phone ? 'ring-red-400' : 'ring-gold/20'}`}
+                          placeholder="98765 43210"
+                        />
+                      </div>
+                      {errors.phone && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.phone}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gray-400 ml-1">WhatsApp Number</label>
-                      <input 
-                        required
-                        type="tel" 
-                        value={formData.whatsapp}
-                        onChange={e => setFormData({...formData, whatsapp: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium"
-                        placeholder="Same as phone?"
-                      />
+                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">WhatsApp Number (Optional)</label>
+                      <div className="flex gap-2">
+                        <select 
+                          value={formData.whatsappCountryCode}
+                          onChange={e => setFormData({...formData, whatsappCountryCode: e.target.value})}
+                          className="px-3 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium text-sm text-gray-500"
+                        >
+                          {COUNTRY_CODES.map(c => (
+                            <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                          ))}
+                        </select>
+                        <input 
+                          ref={whatsappRef}
+                          type="tel" 
+                          value={formData.whatsapp}
+                          onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({...formData, whatsapp: val});
+                            if (errors.whatsapp) setErrors({...errors, whatsapp: ''});
+                          }}
+                          className={`w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 outline-none transition-all font-medium ${errors.whatsapp ? 'ring-red-400' : 'ring-gold/20'}`}
+                          placeholder="Phone number"
+                        />
+                      </div>
+                      {errors.whatsapp && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.whatsapp}</p>}
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gray-400 ml-1">Email (Optional)</label>
+                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Email (Optional)</label>
                       <input 
+                        ref={emailRef}
                         type="email" 
                         value={formData.email}
-                        onChange={e => setFormData({...formData, email: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium"
+                        onChange={e => {
+                          setFormData({...formData, email: e.target.value});
+                          if (errors.email) setErrors({...errors, email: ''});
+                        }}
+                        className={`w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 outline-none transition-all font-medium ${errors.email ? 'ring-red-400' : 'ring-gold/20'}`}
                         placeholder="email@example.com"
                       />
+                      {errors.email && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.email}</p>}
                     </div>
                   </div>
 
@@ -178,15 +286,20 @@ Please share the details. Thank you.`;
 
                   {formData.deliveryOption === 'Home Delivery' && (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gray-400 ml-1">Delivery Address</label>
+                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Delivery Address</label>
                       <textarea 
+                        ref={addressRef}
                         required
                         rows={3}
                         value={formData.address}
-                        onChange={e => setFormData({...formData, address: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 ring-gold/20 outline-none transition-all font-medium resize-none"
+                        onChange={e => {
+                          setFormData({...formData, address: e.target.value});
+                          if (errors.address) setErrors({...errors, address: ''});
+                        }}
+                        className={`w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 outline-none transition-all font-medium resize-none ${errors.address ? 'ring-red-400' : 'ring-gold/20'}`}
                         placeholder="Full delivery address..."
                       />
+                      {errors.address && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.address}</p>}
                     </motion.div>
                   )}
 

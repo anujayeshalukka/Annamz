@@ -157,17 +157,16 @@ export function ProductDetail({ products, addToEnquiry }: { products: Product[],
             </button>
             <button 
               onClick={() => {
-                const shortId = product.id.toString().split('-')[0].toUpperCase();
                 const details = [
-                  `Product: ${product.name}`,
-                  `ID: #${shortId}`,
+                  `*${product.name}*`,
+                  product.image,
                   `Category: ${product.main_category}`,
                   product.fabric ? `Fabric: ${product.fabric}` : null,
                   selectedSize ? `Size: ${selectedSize}` : null,
                   selectedType ? `Type: ${selectedType}` : null
                 ].filter(Boolean).join('\n');
                 
-                const message = `Hello Annamz Clothing, I'm interested in knowing more about this product:\n\n${details}`;
+                const message = `Hello Annamz Clothing,\n\nI'm interested in this product:\n\n${details}\n\nPlease share more details. Thank you.`;
                 window.open(getWhatsAppLink(message), '_blank');
               }}
               className="px-8 py-4 border border-gold text-gold rounded-2xl font-medium hover:bg-gold/5 transition-all"

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronRight, ChevronLeft, Upload, Check, ShoppingCart, MessageCircle, Phone } from 'lucide-react'
 import { getWhatsAppLink } from '../config/contact'
 import { supabase } from '../lib/supabase'
+import { COUNTRY_CODES } from '../constants/countries'
+import { BAKERY_PRODUCTS } from '../constants/bakery'
 
 interface Selection {
   quantity: number;
@@ -31,17 +33,27 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
   const [step, setStep] = useState(1)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selections, setSelections] = useState<Record<string, Selection>>({})
+  
+  const nameRef = useRef<HTMLInputElement>(null)
+  const phoneRef = useRef<HTMLInputElement>(null)
+  const whatsappRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const addressRef = useRef<HTMLTextAreaElement>(null)
+
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
     phone: '',
+    countryCode: '+91',
     whatsappSame: true,
     whatsapp: '',
+    whatsappCountryCode: '+91',
     email: '',
     deliveryType: 'Pickup',
     address: '',
     contactMethod: 'WhatsApp',
     notes: ''
   })
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -96,8 +108,10 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
     setCustomerInfo({
       name: '',
       phone: '',
+      countryCode: '+91',
       whatsappSame: true,
       whatsapp: '',
+      whatsappCountryCode: '+91',
       email: '',
       deliveryType: 'Pickup',
       address: '',
@@ -107,14 +121,70 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
     setSubmitted(false)
   }
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {}
+    let firstErrorField: string | null = null
+    
+    if (!customerInfo.name.trim()) {
+      newErrors.name = 'Name is required'
+      if (!firstErrorField) firstErrorField = 'name'
+    }
+    
+    const phoneRegex = /^\d{10}$/
+    if (!customerInfo.phone) {
+      newErrors.phone = 'Phone number is required'
+      if (!firstErrorField) firstErrorField = 'phone'
+    } else if (!phoneRegex.test(customerInfo.phone)) {
+      newErrors.phone = 'Invalid phone number (10 digits)'
+      if (!firstErrorField) firstErrorField = 'phone'
+    }
+
+    if (!customerInfo.whatsappSame) {
+      if (!customerInfo.whatsapp) {
+        newErrors.whatsapp = 'WhatsApp number is required'
+        if (!firstErrorField) firstErrorField = 'whatsapp'
+      } else if (!phoneRegex.test(customerInfo.whatsapp)) {
+        newErrors.whatsapp = 'Invalid WhatsApp number'
+        if (!firstErrorField) firstErrorField = 'whatsapp'
+      }
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (customerInfo.email && !emailRegex.test(customerInfo.email)) {
+      newErrors.email = 'Invalid email address'
+      if (!firstErrorField) firstErrorField = 'email'
+    }
+
+    if (customerInfo.deliveryType === 'Home Delivery' && !customerInfo.address.trim()) {
+      newErrors.address = 'Address is required for home delivery'
+      if (!firstErrorField) firstErrorField = 'address'
+    }
+
+    setErrors(newErrors)
+
+    if (firstErrorField) {
+      if (firstErrorField === 'name') nameRef.current?.focus();
+      else if (firstErrorField === 'phone') phoneRef.current?.focus();
+      else if (firstErrorField === 'whatsapp') whatsappRef.current?.focus();
+      else if (firstErrorField === 'email') emailRef.current?.focus();
+      else if (firstErrorField === 'address') addressRef.current?.focus();
+    }
+
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validate()) return
     
-    // Generate WhatsApp Message
+    const finalPhone = `${customerInfo.countryCode} ${customerInfo.phone}`
+    const finalWhatsApp = customerInfo.whatsappSame ? finalPhone : `${customerInfo.whatsappCountryCode} ${customerInfo.whatsapp}`
     let message = `Hello Annamz,\n\nI would like to enquire about the following:\n\n`
     
     Object.entries(selections).forEach(([name, data]) => {
-      message += `• *${name}* (Qty: ${data.quantity})\n`
+      const product = BAKERY_PRODUCTS.find(p => p.name === name)
+      const imageText = product ? `${product.image}\n` : ''
+      message += `• *${name}* (Qty: ${data.quantity})\n${imageText}`
       if (isCake(name)) {
         message += `  Weight: ${data.weight}\n`
         message += `  Type: ${data.eggless ? 'Eggless' : 'With Egg'}\n`
@@ -125,18 +195,21 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
 
     message += `*Customer Details:*\n`
     message += `Name: ${customerInfo.name}\n`
-    message += `Phone: ${customerInfo.phone}\n`
+    message += `Phone: ${finalPhone}\n`
+    message += `Email: ${customerInfo.email || 'N/A'}\n`
     message += `Delivery: ${customerInfo.deliveryType}\n`
     if (customerInfo.deliveryType === 'Home Delivery') message += `Address: ${customerInfo.address}\n`
     message += `Preferred Contact: ${customerInfo.contactMethod}\n`
-    if (customerInfo.notes) message += `Notes: ${customerInfo.notes}\n`
+    const whatsappUrl = getWhatsAppLink(message)
+    window.open(whatsappUrl, '_blank')
+    setSubmitted(true)
 
-    // Save to Supabase
     try {
       const { error } = await supabase.from('bakery_enquiries').insert([{
         customer_name: customerInfo.name,
-        customer_phone: customerInfo.phone,
-        whatsapp_number: customerInfo.whatsappSame ? customerInfo.phone : customerInfo.whatsapp,
+        customer_phone: finalPhone,
+        whatsapp_number: finalWhatsApp,
+        customer_email: customerInfo.email,
         delivery_type: customerInfo.deliveryType,
         address: customerInfo.address,
         contact_method: customerInfo.contactMethod,
@@ -150,11 +223,6 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
     } catch (err) {
       console.error('Failed to save to Supabase:', err)
     }
-
-    const whatsappUrl = getWhatsAppLink(message)
-    
-    window.open(whatsappUrl, '_blank')
-    setSubmitted(true)
   }
 
   const handleClose = () => {
@@ -181,10 +249,9 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           className="relative bg-ivory w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl flex flex-col"
         >
-          {/* Header */}
           <div className="p-6 border-b border-gold/10 flex justify-between items-center bg-white/50">
             <div>
-              <h2 className="text-2xl font-serif text-chocolate">Bakery Enquiry</h2>
+              <h2 className="text-2xl font-serif text-chocolate">Patisserie Enquiry</h2>
               <p className="text-sm text-chocolate/60">Step {step} of 3</p>
             </div>
             <button onClick={handleClose} className="p-2 hover:bg-gold/10 rounded-full transition-colors">
@@ -195,7 +262,6 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
           <div className="flex-1 overflow-y-auto p-6">
             {!submitted ? (
               <>
-                {/* Step 1: Category Selection */}
                 {step === 1 && (
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
                     <h3 className="text-lg font-medium text-chocolate mb-4">What are you looking for today?</h3>
@@ -224,7 +290,6 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
                   </motion.div>
                 )}
 
-                {/* Step 2: Product Selection */}
                 {step === 2 && (
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
                     {selectedCategories.map(catId => {
@@ -266,7 +331,6 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
                                   )}
                                 </button>
 
-                                {/* Cake Customization Fields */}
                                 {selections[product] && isCake(product) && (
                                   <motion.div 
                                     initial={{ height: 0, opacity: 0 }}
@@ -341,14 +405,14 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
                   </motion.div>
                 )}
 
-                {/* Step 3: General Fields */}
                 {step === 3 && (
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-chocolate mb-1">Customer Name *</label>
+                          <label className="block text-sm font-medium text-chocolate mb-1">Full Name *</label>
                           <input 
+                            ref={nameRef}
                             type="text" 
                             required
                             value={customerInfo.name}
@@ -359,14 +423,46 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-chocolate mb-1">Phone Number *</label>
+                          <div className="flex gap-2">
+                            <select 
+                              value={customerInfo.countryCode}
+                              onChange={e => setCustomerInfo({...customerInfo, countryCode: e.target.value})}
+                              className="px-2 bg-white border border-chocolate/10 rounded-xl text-chocolate font-medium text-sm focus:border-gold outline-none"
+                            >
+                              {COUNTRY_CODES.map(c => (
+                                <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                              ))}
+                            </select>
+                            <input 
+                              ref={phoneRef}
+                              type="tel" 
+                              required
+                              value={customerInfo.phone}
+                              onChange={e => {
+                                const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                setCustomerInfo({...customerInfo, phone: val});
+                                if (errors.phone) setErrors({...errors, phone: ''});
+                              }}
+                              className={`w-full p-3 bg-white rounded-xl border outline-none focus:border-gold shadow-sm ${errors.phone ? 'border-red-400' : 'border-chocolate/10'}`}
+                              placeholder="98765 43210"
+                            />
+                          </div>
+                          {errors.phone && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.phone}</p>}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-chocolate mb-1">Email Address</label>
                           <input 
-                            type="tel" 
-                            required
-                            value={customerInfo.phone}
-                            onChange={e => setCustomerInfo({...customerInfo, phone: e.target.value})}
-                            className="w-full p-3 bg-white rounded-xl border border-chocolate/10 outline-none focus:border-gold shadow-sm"
-                            placeholder="e.g. 98765 43210"
+                            ref={emailRef}
+                            type="email" 
+                            value={customerInfo.email}
+                            onChange={e => {
+                              setCustomerInfo({...customerInfo, email: e.target.value});
+                              if (errors.email) setErrors({...errors, email: ''});
+                            }}
+                            className={`w-full p-3 bg-white rounded-xl border outline-none focus:border-gold shadow-sm ${errors.email ? 'border-red-400' : 'border-chocolate/10'}`}
+                            placeholder="your@email.com"
                           />
+                          {errors.email && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.email}</p>}
                         </div>
                         <div className="flex items-center space-x-3">
                           <button 
@@ -381,13 +477,30 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
                         {!customerInfo.whatsappSame && (
                           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
                             <label className="block text-sm font-medium text-chocolate mb-1">WhatsApp Number</label>
-                            <input 
-                              type="tel" 
-                              value={customerInfo.whatsapp}
-                              onChange={e => setCustomerInfo({...customerInfo, whatsapp: e.target.value})}
-                              className="w-full p-3 bg-white rounded-xl border border-chocolate/10 outline-none focus:border-gold shadow-sm"
-                              placeholder="WhatsApp number"
-                            />
+                            <div className="flex gap-2">
+                              <select 
+                                value={customerInfo.whatsappCountryCode}
+                                onChange={e => setCustomerInfo({...customerInfo, whatsappCountryCode: e.target.value})}
+                                className="px-2 bg-white border border-chocolate/10 rounded-xl text-chocolate font-medium text-sm focus:border-gold outline-none"
+                              >
+                                {COUNTRY_CODES.map(c => (
+                                  <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                                ))}
+                              </select>
+                              <input 
+                                ref={whatsappRef}
+                                type="tel" 
+                                value={customerInfo.whatsapp}
+                                onChange={e => {
+                                  const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                  setCustomerInfo({...customerInfo, whatsapp: val});
+                                  if (errors.whatsapp) setErrors({...errors, whatsapp: ''});
+                                }}
+                                className={`w-full p-3 bg-white rounded-xl border outline-none focus:border-gold shadow-sm ${errors.whatsapp ? 'border-red-400' : 'border-chocolate/10'}`}
+                                placeholder="WhatsApp number"
+                              />
+                            </div>
+                            {errors.whatsapp && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.whatsapp}</p>}
                           </motion.div>
                         )}
                       </div>
@@ -409,15 +522,20 @@ export default function BakeryEnquiryForm({ isOpen, onClose }: BakeryEnquiryForm
                           </div>
                         </div>
                         {customerInfo.deliveryType === 'Home Delivery' && (
-                          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-                            <label className="block text-sm font-medium text-chocolate mb-1">Delivery Address</label>
+                          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+                            <label className="block text-sm font-medium text-chocolate mb-1">Delivery Address *</label>
                             <textarea 
+                              ref={addressRef}
                               value={customerInfo.address}
-                              onChange={e => setCustomerInfo({...customerInfo, address: e.target.value})}
-                              className="w-full p-3 bg-white rounded-xl border border-chocolate/10 outline-none focus:border-gold shadow-sm resize-none"
+                              onChange={e => {
+                                setCustomerInfo({...customerInfo, address: e.target.value});
+                                if (errors.address) setErrors({...errors, address: ''});
+                              }}
+                              className={`w-full p-3 bg-white rounded-xl border outline-none focus:border-gold shadow-sm resize-none ${errors.address ? 'border-red-400' : 'border-chocolate/10'}`}
                               rows={3}
                               placeholder="House No, Street, Landmark..."
                             />
+                            {errors.address && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.address}</p>}
                           </motion.div>
                         )}
                         <div>

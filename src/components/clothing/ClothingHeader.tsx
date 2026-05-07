@@ -73,7 +73,7 @@ export function ClothingHeader({
             to="/bakery" 
             className="hidden md:block btn-nav-outline px-6 py-2.5 text-xs tracking-widest uppercase font-bold"
           >
-            Annamz Bakery
+            Annamz' Patisserie
           </Link>
           
           <button 
@@ -115,7 +115,7 @@ export function ClothingHeader({
                 onClick={() => setIsMenuOpen(false)}
                 className="btn-nav-outline w-full text-center text-[10px] tracking-widest uppercase font-bold py-3 mt-4"
               >
-                Annamz Bakery
+              Annamz' Patisserie
               </Link>
             </div>
           </motion.div>

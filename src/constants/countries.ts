@@ -1,0 +1,17 @@
+export const COUNTRY_CODES = [
+  { code: '+91', country: 'India', flag: '🇮🇳' },
+  { code: '+971', country: 'UAE', flag: '🇦🇪' },
+  { code: '+1', country: 'USA', flag: '🇺🇸' },
+  { code: '+44', country: 'UK', flag: '🇬🇧' },
+  { code: '+966', country: 'Saudi Arabia', flag: '🇸🇦' },
+  { code: '+968', country: 'Oman', flag: '🇴🇲' },
+  { code: '+974', country: 'Qatar', flag: '🇶🇦' },
+  { code: '+965', country: 'Kuwait', flag: '🇰🇼' },
+  { code: '+973', country: 'Bahrain', flag: '🇧🇭' },
+  { code: '+61', country: 'Australia', flag: '🇦🇺' },
+  { code: '+1', country: 'Canada', flag: '🇨🇦' },
+  { code: '+65', country: 'Singapore', flag: '🇸🇬' },
+  { code: '+60', country: 'Malaysia', flag: '🇲🇾' },
+  { code: '+49', country: 'Germany', flag: '🇩🇪' },
+  { code: '+33', country: 'France', flag: '🇫🇷' },
+];

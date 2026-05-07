@@ -93,7 +93,7 @@ export default function SplitHome() {
         </div>
       </motion.div>
 
-      {/* Annamz Bakery Section */}
+      {/* Annamz' Patisserie Section */}
       <motion.div
         className="relative flex-1 h-1/2 md:h-full overflow-hidden cursor-pointer group"
         onMouseEnter={() => setHovered('bakery')}
@@ -122,12 +122,12 @@ export default function SplitHome() {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h2 className="text-3xl md:text-6xl font-serif mb-4 tracking-wider">Annamz Bakery</h2>
-            <p className="text-lg md:text-xl font-light mb-8 italic opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              Artisan Premium Bakery & Sweet Delights
+            <h2 className="text-3xl md:text-6xl font-serif mb-4 tracking-wider">Annamz' Patisserie</h2>
+            <p className="text-ivory/60 text-sm md:text-base mb-8 max-w-md mx-auto font-light tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              Artisan Premium Patisserie & Sweet Delights
             </p>
-            <button className="btn-premium opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-              Explore Bakery
+            <button className="btn-premium px-10 py-4 text-sm tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+              Explore Patisserie
             </button>
           </motion.div>
         </div>

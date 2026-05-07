@@ -9,46 +9,10 @@ const aboutImg = IMAGE_BASE_URL + 'about.jpg'
 const weddingImg = IMAGE_BASE_URL + 'wedding.jpg'
 const birthdayImg = IMAGE_BASE_URL + 'birthday.jpg'
 const officeImg = IMAGE_BASE_URL + 'office.jpg'
-const cake1 = IMAGE_BASE_URL + 'cake1.avif'
-const cake2 = IMAGE_BASE_URL + 'cake2.jpg'
-const cake3 = IMAGE_BASE_URL + 'cake3.jpg'
-const cake4 = IMAGE_BASE_URL + 'cake4.avif'
-const cake5 = IMAGE_BASE_URL + 'cake5.jpg'
-const cake6 = IMAGE_BASE_URL + 'cake6.avif'
-const cake7 = IMAGE_BASE_URL + 'cake7.jpg'
-const cake8 = IMAGE_BASE_URL + 'cake8.jpg'
-const cake9 = IMAGE_BASE_URL + 'cake9.avif'
-const cake10 = IMAGE_BASE_URL + 'cake10.jpg'
-const cake11 = IMAGE_BASE_URL + 'cake11.jpg'
-const cake12 = IMAGE_BASE_URL + 'cake12.avif'
-const cake13 = IMAGE_BASE_URL + 'cake13.webp'
-const cake14 = IMAGE_BASE_URL + 'cake14.webp'
-const cake15 = IMAGE_BASE_URL + 'cake15.jpg'
-const cake16 = IMAGE_BASE_URL + 'cake16.jpg'
-const cake17 = IMAGE_BASE_URL + 'cake17.jpg'
-const cake18 = IMAGE_BASE_URL + 'cake18.avif'
-const cake19 = IMAGE_BASE_URL + 'cake19.webp'
-const cake20 = IMAGE_BASE_URL + 'cake20.avif'
-const cake21 = IMAGE_BASE_URL + 'cake21.avif'
-const cake22 = IMAGE_BASE_URL + 'cake22.avif'
-const cake23 = IMAGE_BASE_URL + 'cake23.avif'
-const id24 = IMAGE_BASE_URL + 'id24.jpg'
-const id25 = IMAGE_BASE_URL + 'id25.jpg'
-const id26 = IMAGE_BASE_URL + 'id26.jpg'
-const id27 = IMAGE_BASE_URL + 'id27.jpg'
-const id28 = IMAGE_BASE_URL + 'id28.avif'
-const id29 = IMAGE_BASE_URL + 'id29.jpg'
-const id30 = IMAGE_BASE_URL + 'id30.jpg'
-const id31 = IMAGE_BASE_URL + 'id31.jpg'
-const id32 = IMAGE_BASE_URL + 'id32.webp'
-const id33 = IMAGE_BASE_URL + 'id33.webp'
-const id34 = IMAGE_BASE_URL + 'id34.jpg'
-const id35 = IMAGE_BASE_URL + 'id35.jpg'
-const id36 = IMAGE_BASE_URL + 'id36.webp'
-const id37 = IMAGE_BASE_URL + 'id37.jpg'
 import BakeryEnquiryForm from '../components/BakeryEnquiryForm'
 import { BakeryBottomNav } from '../components/BakeryBottomNav'
 import { CONTACT_INFO, getWhatsAppLink } from '../config/contact'
+import { BAKERY_PRODUCTS } from '../constants/bakery'
 
 const CATEGORIES = [
   "All",
@@ -61,58 +25,7 @@ const CATEGORIES = [
   "Masala Powders" 
 ];
 
-const ALL_PRODUCTS = [ 
-  // Dry Cakes
-  { id: 1, name: "Rich Chocolate Cake", category: "Dry Cakes", price: "On Request", image: cake1, description: "Moist dark chocolate with a velvety finish." },
-  { id: 2, name: "Sponge Cake", category: "Dry Cakes", price: "On Request", image: cake2, description: "Light, airy, and perfect for tea time." },
-  { id: 3, name: "Coffee Cake", category: "Dry Cakes", price: "On Request", image: cake3, description: "Infused with premium Arabica beans." },
-  { id: 4, name: "Iced Lemon Cake", category: "Dry Cakes", price: "On Request", image: cake4, description: "Zesty citrus glaze on a buttery base." },
-  { id: 5, name: "Carrot Dates Cake", category: "Dry Cakes", price: "On Request", image: cake5, description: "Healthy goodness with natural sweetness." },
-  { id: 6, name: "Laizy Daizy Cake", category: "Dry Cakes", price: "On Request", image: cake6, description: "Classic coconut-topped nostalgic delight." },
-  { id: 7, name: "Tropical Fruit Cake", category: "Dry Cakes", price: "On Request", image: cake7, description: "Fresh tropical flavor in every bite." },
-
-  // Cream Cakes
-  { id: 8, name: "Chocolate Dry Fruit Cake", category: "Cream Cakes", price: "On Request", image: cake8, description: "Nutty crunch meets rich cocoa cream." },
-  { id: 9, name: "Red Velvet Cake", category: "Cream Cakes", price: "On Request", image: cake9, description: "Sophisticated cocoa flavor with cream cheese." },
-  { id: 10, name: "Football Theme Cake", category: "Cream Cakes", price: "On Request", image: cake10, description: "Custom designed for the sports enthusiast." },
-  { id: 11, name: "Number Cake", category: "Cream Cakes", price: "On Request", image: cake11, description: "Personalized celebration for every milestone." },
-  { id: 12, name: "White Designer Cake", category: "Cream Cakes", price: "On Request", image: cake12, description: "Elegant artistry for special occasions." },
-  { id: 13, name: "Kuromi Cake", category: "Cream Cakes", price: "On Request", image: cake13, description: "Trendy character-themed purple delight." },
-  { id: 14, name: "PUBG Cake", category: "Cream Cakes", price: "On Request", image: cake14, description: "Winner winner chicken dinner for gamers." },
-  { id: 15, name: "Candle Cake", category: "Cream Cakes", price: "On Request", image: cake15, description: "Unique aesthetic that lights up the party." },
-  { id: 16, name: "Fluffy Pillow Cake", category: "Cream Cakes", price: "On Request", image: cake16, description: "Soft, dreamy textures for luxury gifting." },
-  { id: 17, name: "Mermaid Theme Cake", category: "Cream Cakes", price: "On Request", image: cake17, description: "Enchanting sea-inspired colors and motifs." },
-  { id: 18, name: "Dalgona Coffee Cake", category: "Cream Cakes", price: "On Request", image: cake18, description: "Trendy whipped coffee flavor profile." },
-  { id: 19, name: "Praline Cake", category: "Cream Cakes", price: "On Request", image: cake19, description: "Caramelized nuts in a silky cream base." },
-
-  // Dessert Cakes
-  { id: 20, name: "Tiramisu", category: "Dessert Cakes", price: "On Request", image: cake20, description: "Authentic Italian coffee-soaked elegance." },
-  { id: 21, name: "Cheesecake", category: "Dessert Cakes", price: "On Request", image: cake21, description: "Creamy, dense, and perfectly balanced." },
-  { id: 22, name: "Biscoff Cake", category: "Dessert Cakes", price: "On Request", image: cake22, description: "Irresistible cookie butter indulgence." },
-  { id: 23, name: "Caramel Pudding", category: "Dessert Cakes", price: "On Request", image: cake23, description: "Silky smooth melt-in-your-mouth classic." },
-
-  // Brownies & Snacks
-  { id: 24, name: "Fudge Brownie", category: "Brownies & Snacks", price: "On Request", image: id24, description: "Gooey, chocolatey, and intensely rich." },
-  { id: 25, name: "Double Chocolate Fudge Brownie", category: "Brownies & Snacks", price: "On Request", image: id25, description: "Extra cocoa for the ultimate chocoholic." },
-  { id: 26, name: "Blondie", category: "Brownies & Snacks", price: "On Request", image: id26, description: "White chocolate and brown sugar magic." },
-  { id: 27, name: "Donuts", category: "Brownies & Snacks", price: "On Request", image: id27, description: "Assorted glazes and fluffy dough." },
-  { id: 28, name: "Pizza", category: "Brownies & Snacks", price: "On Request", image: id28, description: "Freshly baked artisan crust and toppings." },
-
-  // Fruit Concentrates
-  { id: 29, name: "Ginger Lime", category: "Fruit Concentrates", price: "On Request", image: id29, description: "Refreshing zesty concentrate for mocktails." },
-  { id: 30, name: "Beetroot", category: "Fruit Concentrates", price: "On Request", image: id30, description: "Natural earthy sweetness for healthy sips." },
-  { id: 31, name: "Carrot", category: "Fruit Concentrates", price: "On Request", image: id31, description: "Pure vegetable goodness in a bottle." },
-
-  // Pickles
-  { id: 32, name: "Meat Pickle", category: "Pickles", price: "On Request", image: id32, description: "Spicy, savory, and traditionally cured." },
-  { id: 33, name: "Fish Pickle", category: "Pickles", price: "On Request", image: id33, description: "Coastal flavors with a spicy kick." },
-  { id: 34, name: "Lemon Dates Pickle", category: "Pickles", price: "On Request", image: id34, description: "Sweet and sour traditional preserve." },
-
-  // Masala Powders
-  { id: 35, name: "Garam Masala", category: "Masala Powders", price: "On Request", image: id35, description: "Aromatic blend of roasted premium spices." },
-  { id: 36, name: "Biriyani Masala", category: "Masala Powders", price: "On Request", image: id36, description: "The secret to the perfect authentic biriyani." },
-  { id: 37, name: "Sambar Masala", category: "Masala Powders", price: "On Request", image: id37, description: "Classic South Indian lentil stew seasoning." },
-];
+const ALL_PRODUCTS = BAKERY_PRODUCTS;
 
 export default function BakeryLanding() {
   const [scrolled, setScrolled] = useState(false)
@@ -130,7 +43,11 @@ export default function BakeryLanding() {
   }, [activeCategory, searchQuery]);
 
   const handleWhatsAppEnquiry = (productName: string) => {
-    const message = `Hello Annamz, I would like to enquire about "${productName}"`;
+    const product = ALL_PRODUCTS.find(p => p.name === productName);
+    const imageText = product ? `${product.image}\n` : '';
+    const message = `Hello Annamz, I would like to enquire about:
+${imageText}
+*${productName}*`;
     window.open(getWhatsAppLink(message), '_blank');
   };
 
@@ -238,7 +155,7 @@ export default function BakeryLanding() {
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-8xl font-serif mb-6"
           >
-            Annamz Bakery
+            Annamz' Patisserie
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -272,7 +189,7 @@ export default function BakeryLanding() {
             >
               <h2 className="text-4xl md:text-5xl font-serif mb-8">Our Artisanal Story</h2>
               <p className="text-lg leading-relaxed mb-6">
-                At Annamz Bakery, we believe that every bite should be a moment of pure joy. Our master bakers combine traditional techniques with the finest ingredients to create textures and flavors that linger.
+                At Annamz' Patisserie, we believe that every bite should be a moment of pure joy. Our master bakers combine traditional techniques with the finest ingredients to create textures and flavors that linger.
               </p>
               <p className="text-lg leading-relaxed mb-8">
                 From our signature sourdough to our bespoke celebration cakes, every creation is a testament to our passion for quality and elegance.
@@ -285,7 +202,7 @@ export default function BakeryLanding() {
               transition={{ duration: 0.8 }}
               className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl"
             >
-              <img src={aboutImg} alt="Bakery Interior" className="w-full h-full object-cover" />
+              <img src={aboutImg} alt="Patisserie Interior" className="w-full h-full object-cover" />
             </motion.div>
           </div>
         </div>
@@ -558,7 +475,21 @@ export default function BakeryLanding() {
             <div>
               <h4 className="font-serif text-2xl mb-8 text-gold">Join the Club</h4>
               <p className="text-gray-400 mb-6 font-light">Subscribe to get special offers and first look at new arrivals.</p>
-              <form className="relative" onSubmit={(e) => e.preventDefault()}>
+              <form 
+                className="relative" 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const emailInput = e.currentTarget.querySelector('input');
+                  const email = emailInput?.value;
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (email && emailRegex.test(email)) {
+                    alert('Thank you for subscribing!');
+                    if (emailInput) emailInput.value = '';
+                  } else {
+                    alert('Please enter a valid email address.');
+                  }
+                }}
+              >
                 <input 
                   type="email" 
                   placeholder="Your email address"
@@ -575,7 +506,7 @@ export default function BakeryLanding() {
           </div>
 
           <div className="pt-12 border-t border-ivory/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 font-light">
-            <p>© 2026 Annamz Bakery. All rights reserved.</p>
+            <p>© 2026 Annamz' Patisserie. All rights reserved.</p>
             <p className="mt-4 md:mt-0 flex items-center">
               Crafted with <Star size={12} className="mx-1 text-gold" fill="currentColor" /> by Annamz Design Team
             </p>

@@ -2,27 +2,61 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Phone, Mail, MessageCircle, Clock, Globe, Check } from 'lucide-react'
 import { CONTACT_INFO, getWhatsAppLink } from '../../config/contact'
+import { COUNTRY_CODES } from '../../constants/countries'
 
 export function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    countryCode: '+91',
+    message: ''
+  });
 
   const handleWhatsApp = () => {
     const message = "Hello Annamz, I would like to enquire about your latest collection.";
     window.open(getWhatsAppLink(message), '_blank');
   };
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Invalid email address';
+    }
+
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (formData.phone && !phoneRegex.test(formData.phone)) {
+      newErrors.phone = 'Invalid phone number (10 digits)';
+    }
+
+    if (!formData.message.trim()) newErrors.message = 'Message is required';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validate()) return;
     setIsSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "c0317e0b-8514-46c2-8419-74d47e4369e4"); // Replace with your Web3Forms Access Key
+    const submissionData = new FormData();
+    submissionData.append("access_key", "c0317e0b-8514-46c2-8419-74d47e4369e4");
+    submissionData.append("name", formData.name);
+    submissionData.append("email", formData.email);
+    submissionData.append("phone", formData.phone ? `${formData.countryCode} ${formData.phone}` : 'N/A');
+    submissionData.append("message", formData.message);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formData
+        body: submissionData
       });
 
       const data = await response.json();
@@ -175,9 +209,15 @@ export function ContactPage() {
                           type="text" 
                           name="name"
                           required
-                          className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gold/30 focus:bg-white rounded-2xl outline-none transition-all"
+                          value={formData.name}
+                          onChange={e => {
+                            setFormData({...formData, name: e.target.value});
+                            if (errors.name) setErrors({...errors, name: ''});
+                          }}
+                          className={`w-full px-6 py-4 bg-gray-50 border transition-all rounded-2xl outline-none ${errors.name ? 'border-red-400' : 'border-transparent focus:border-gold/30 focus:bg-white'}`}
                           placeholder="Jane Doe"
                         />
+                        {errors.name && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.name}</p>}
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Email Address</label>
@@ -185,20 +225,44 @@ export function ContactPage() {
                           type="email" 
                           name="email"
                           required
-                          className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gold/30 focus:bg-white rounded-2xl outline-none transition-all"
+                          value={formData.email}
+                          onChange={e => {
+                            setFormData({...formData, email: e.target.value});
+                            if (errors.email) setErrors({...errors, email: ''});
+                          }}
+                          className={`w-full px-6 py-4 bg-gray-50 border transition-all rounded-2xl outline-none ${errors.email ? 'border-red-400' : 'border-transparent focus:border-gold/30 focus:bg-white'}`}
                           placeholder="jane@example.com"
                         />
+                        {errors.email && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.email}</p>}
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Phone Number</label>
-                      <input 
-                        type="tel" 
-                        name="phone"
-                        className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gold/30 focus:bg-white rounded-2xl outline-none transition-all"
-                        placeholder="+91 98765 43210"
-                      />
+                      <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-1">Phone Number (Optional)</label>
+                      <div className="flex gap-2">
+                        <select 
+                          value={formData.countryCode}
+                          onChange={e => setFormData({...formData, countryCode: e.target.value})}
+                          className="px-4 py-4 bg-gray-50 border border-transparent rounded-2xl outline-none transition-all text-sm font-medium text-gray-500"
+                        >
+                          {COUNTRY_CODES.map(c => (
+                            <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                          ))}
+                        </select>
+                        <input 
+                          type="tel" 
+                          name="phone"
+                          value={formData.phone}
+                          onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({...formData, phone: val});
+                            if (errors.phone) setErrors({...errors, phone: ''});
+                          }}
+                          className={`w-full px-6 py-4 bg-gray-50 border transition-all rounded-2xl outline-none ${errors.phone ? 'border-red-400' : 'border-transparent focus:border-gold/30 focus:bg-white'}`}
+                          placeholder="98765 43210"
+                        />
+                      </div>
+                      {errors.phone && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.phone}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -207,9 +271,15 @@ export function ContactPage() {
                         name="message"
                         required
                         rows={4}
-                        className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gold/30 focus:bg-white rounded-2xl outline-none transition-all resize-none"
+                        value={formData.message}
+                        onChange={e => {
+                          setFormData({...formData, message: e.target.value});
+                          if (errors.message) setErrors({...errors, message: ''});
+                        }}
+                        className={`w-full px-6 py-4 bg-gray-50 border transition-all rounded-2xl outline-none resize-none ${errors.message ? 'border-red-400' : 'border-transparent focus:border-gold/30 focus:bg-white'}`}
                         placeholder="How can we help you today?"
                       />
+                      {errors.message && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.message}</p>}
                     </div>
 
                     <button 
