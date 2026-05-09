@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, Mail, MessageCircle, Clock, Globe, Check, Instagram } from 'lucide-react'
+import { Phone, Mail, MessageCircle, Clock, Check } from 'lucide-react'
 import { CONTACT_INFO, getWhatsAppLink } from '../../config/contact'
 import { COUNTRY_CODES } from '../../constants/countries'
 import { BANNER_IMAGE_URL } from '../../constants/clothing'
@@ -153,7 +153,7 @@ export function ContactPage() {
                 </div>
               </div>
 
-              <a 
+              {/* <a 
                 href={CONTACT_INFO.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer" 
@@ -166,7 +166,7 @@ export function ContactPage() {
                   <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Follow Us</h3>
                   <p className="text-chocolate font-medium group-hover:text-gold transition-colors">@{CONTACT_INFO.instagram}</p>
                 </div>
-              </a>
+              </a> */}
             </div>
 
             <div className="p-8 bg-chocolate text-ivory rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-6">
