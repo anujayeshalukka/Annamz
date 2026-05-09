@@ -3,8 +3,6 @@ export const CONTACT_INFO = {
   whatsapp: '919995090661',
   email: 'annamz.artistry@gmail.com',
   address: 'Annamz Boutique, Artisan Square, Gourmet District, PIN 682001',
-  instagram: 'AnnamzOfficial',
-  instagramUrl: 'https://www.instagram.com/AnnamzOfficial',
 }
 
 export const getWhatsAppLink = (message: string) => {
