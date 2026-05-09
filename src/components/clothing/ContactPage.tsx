@@ -5,6 +5,8 @@ import { CONTACT_INFO, getWhatsAppLink } from '../../config/contact'
 import { COUNTRY_CODES } from '../../constants/countries'
 
 export function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     name: '',
