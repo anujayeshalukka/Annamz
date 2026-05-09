@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, Mail, MessageCircle, Clock, Globe, Check } from 'lucide-react'
+import { Phone, Mail, MessageCircle, Clock, Globe, Check, Instagram } from 'lucide-react'
 import { CONTACT_INFO, getWhatsAppLink } from '../../config/contact'
 import { COUNTRY_CODES } from '../../constants/countries'
 
@@ -121,25 +121,25 @@ export function ContactPage() {
             </div>
 
             <div className="grid sm:grid-cols-2 gap-8">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0">
+              <a href={`tel:${CONTACT_INFO.phone}`} className="flex gap-4 group cursor-pointer">
+                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0 group-hover:bg-gold group-hover:text-white transition-all duration-300">
                   <Phone size={20} />
                 </div>
                 <div>
                   <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Call Us</h3>
-                  <p className="text-chocolate font-medium">{CONTACT_INFO.phone}</p>
+                  <p className="text-chocolate font-medium group-hover:text-gold transition-colors">{CONTACT_INFO.phone}</p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0">
+              <a href={`mailto:${CONTACT_INFO.email}`} className="flex gap-4 group cursor-pointer">
+                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0 group-hover:bg-gold group-hover:text-white transition-all duration-300">
                   <Mail size={20} />
                 </div>
                 <div>
                   <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Email Us</h3>
-                  <p className="text-chocolate font-medium">{CONTACT_INFO.email}</p>
+                  <p className="text-chocolate font-medium group-hover:text-gold transition-colors">{CONTACT_INFO.email}</p>
                 </div>
-              </div>
+              </a>
 
               <div className="flex gap-4">
                 <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0">
@@ -152,15 +152,20 @@ export function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0">
-                  <Globe size={20} />
+              <a 
+                href={CONTACT_INFO.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer" 
+                className="flex gap-4 group cursor-pointer"
+              >
+                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold shrink-0 group-hover:bg-gold group-hover:text-white transition-all duration-300">
+                  <Instagram size={20} />
                 </div>
                 <div>
                   <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">Follow Us</h3>
-                  <p className="text-chocolate font-medium">@AnnamzOfficial</p>
+                  <p className="text-chocolate font-medium group-hover:text-gold transition-colors">@{CONTACT_INFO.instagram}</p>
                 </div>
-              </div>
+              </a>
             </div>
 
             <div className="p-8 bg-chocolate text-ivory rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-6">
