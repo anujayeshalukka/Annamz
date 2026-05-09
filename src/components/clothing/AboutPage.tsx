@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { CLOTHING_IMAGE_URL } from '../../constants/clothing'
+import { CLOTHING_IMAGE_URL, BANNER_IMAGE_URL } from '../../constants/clothing'
 
 export function AboutPage() {
   return (
@@ -8,7 +8,7 @@ export function AboutPage() {
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&q=80&w=2000" 
+            src={`${BANNER_IMAGE_URL}about.jpg`} 
             alt="Atelier" 
             className="w-full h-full object-cover brightness-50"
           />

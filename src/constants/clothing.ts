@@ -3,6 +3,7 @@ import type { Product } from '../types/clothing';
 export const IMAGE_BASE_URL = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/images/';
 export const CATEGORY_IMAGE_URL = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/maincategory/';
 export const CLOTHING_IMAGE_URL = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/clothings/';
+export const BANNER_IMAGE_URL = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/banner/';
 export const logo = IMAGE_BASE_URL + 'logo.png';
 export const clothingVideo = 'https://zjemljuanmretlnmjdah.supabase.co/storage/v1/object/public/videos/annamzclothings1.mp4';
 
