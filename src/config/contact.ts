@@ -2,7 +2,7 @@ export const CONTACT_INFO = {
   phone: '(+91) 99950 90661',
   whatsapp: '919995090661',
   email: 'annamz.artistry@gmail.com',
-  address: 'Annamz Boutique, Artisan Square, Gourmet District, PIN 682001',
+  address: 'Vattamattathil House, Puthuvely P.O, Monipilly, Kottayam, PIN 686636',
 }
 
 export const getWhatsAppLink = (message: string) => {

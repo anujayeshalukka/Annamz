@@ -455,7 +455,7 @@ ${imageText}
               <ul className="space-y-6 text-gray-400">
                 <li className="flex items-start space-x-4">
                   <MapPin size={20} className="text-gold mt-1 flex-shrink-0" />
-                  <span className="font-light">123 Baker Street, Artisan Square,<br />Gourmet District, PIN 682001</span>
+                  <span className="font-light">Vattamattathil House, Puthuvely P.O,<br />Monipilly, Kottayam, PIN 686636</span>
                 </li>
                 <li className="flex items-center space-x-4">
                   <Phone size={20} className="text-gold flex-shrink-0" />
